@@ -1,4 +1,5 @@
 # Credit Risk Model Building
+![Credit Risk Management](Credit_img.jpeg)
 
 # Problem Statement
 - This Dataset Contain the information about the bank customer that will take loan.
@@ -7,7 +8,6 @@
 - Both conatin same data about bank.
 - Both files also contain `-99999` values.
 - `-99999` are the missing values.
-- We can specific `-99999` as a `Null value` while reading the data.
 
 ## Reading Data
 
@@ -21,7 +21,11 @@ data_folder = "Data"
 for filename in os.listdir(data_folder):
     file_paths.append(os.path.join(os.getcwd(), data_folder, filename))
     print(os.path.join(os.getcwd(), data_folder, filename))
+
+df1=pd.read_excel(file_path[0])
+df2=pd.read_excel(file_path[1])
 ```
+
 # Data Preprocessing
 - Top records
 - Shape of data
@@ -45,3 +49,25 @@ for filename in os.listdir(data_folder):
 ```python
 final_df=df1.merge(df2,how='inner',on='PROSPECTID')
 ```
+# Datatypes
+```python
+final_df.dtypes
+```
+# Handling Missing Values
+- As mentioned earlier, both files contain `-99999` values, which represent missing values.
+- Check if the ratio of `-99999` values is greater in a specific column and consider removing those columns.
+
+# Conclusion
+- After removing columns containing more than `10000` `-99999` values, the dataframe has `51336` rows and `79` columns.
+- We will remove only those columns with more than `10000` `-99999` values, but keep in mind that `-99999` values are also present in columns with fewer than `10000` occurrences.
+
+# Points to Remember
+- There are two options for handling the remaining missing values:
+    ## Remove Missing Values
+    - We can remove the rows with missing values if the data balance allows it.
+    ## Fill Missing Values
+    - Filling missing values is critical, especially if removing them results in significant data loss.
+
+# Conclusion (Handling -99999 Values)
+- After removing rows containing `-99999` values, we can retain `80%` of the data.
+- We have decided to remove the missing values.
