@@ -115,3 +115,30 @@ for i in range(num_col.shape[0]):
 
 # Conclussion
 - After applying `variance inflence factor` we can reduce some column now the remaing `numerical column is 40`
+
+
+# ANOVA
+- It is a hypothesis test in this test we can check the relationship b/w numerical col to target col.
+- Target  col should be categorical and must contain 3 or greater then 3 categories.
+- In our case our target col is `Approved_Flag` which contain `4 classes`.
+- We can set the threshold `0.05` if the p_value is greater then `0.05` we can drop these columns.
+- `0.05` threshold are generaly industry standard.
+```python
+col_to_remaing=[]
+for i in col_to_kept:
+    current_col=final_df[i]
+    targte_col=final_df[cat_col[-1]]
+    
+    # Saperat each group for preforming ANOVA 
+    group1=[value for value,group in zip(current_col,targte_col) if group=='P1']
+    group2=[value for value,group in zip(current_col,targte_col) if group=='P2']
+    group3=[value for value,group in zip(current_col,targte_col) if group=='P3']
+    group4=[value for value,group in zip(current_col,targte_col) if group=='P4']
+    
+    # Perform ANOVA
+    f_stats,p_value=f_oneway(group1,group2,group3,group4)
+    print(i,"------>",p_value)
+    
+    if(p_value<0.05):
+        col_to_remaing.append(i)
+```
