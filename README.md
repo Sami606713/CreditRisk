@@ -86,3 +86,32 @@ final_df.duplicated().sum()
 - There are `6` unique values in  `first_prod_enq2` i-e `['PL' 'ConsumerLoan' 'others' 'AL' 'HL' 'CC']`
 - There are `4` unique values in  `Approved_Flag` i-e `['P2' 'P1' 'P3' 'P4']`
 
+# Feature Engnering
+## Hypothesis Testing
+
+## Variance Inflence factor
+- In statistics, the variance inflation factor (VIF) is a ratio that measures the severity of multicollinearity in regression analysis.
+- Multicollinearity occurs when two or more independent variables in a regression model have a linear relationship, which can negatively impact regression results. The VIF measures the number of inflated variances caused by multicollinearity.
+- We can apply the `VIF` on numerical columns to check the relationship of each column to every other col.
+- If the 2 or more columns are highly corelated so we can take only one column so that i will reduce the `multicolarnarty`.
+- If we can reduce multicolarty the column will automaticlally reduce.
+- we can set the threshold ratio if the variance is greater then treshold we can drop the columns.
+- if the variance is less then treshold we can keep the columns.
+```python
+col_to_kepto=[]
+vif_data=final_df[num_col]
+column_index=0
+for i in range(num_col.shape[0]):
+    # variance_inflation_factor(dataframe,index)
+    vif_value=variance_inflation_factor(vif_data,column_index)
+    print(i,"------->",vif_value)
+    
+    if(vif_value<=6):
+        col_to_kept.append(num_col[i])
+        column_index+=1
+    else:
+        vif_data=vif_data.drop(columns=num_col[i])
+```
+
+# Conclussion
+- After applying `variance inflence factor` we can reduce some column now the remaing `numerical column is 40`
