@@ -142,3 +142,22 @@ for i in col_to_kept:
     if(p_value<0.05):
         col_to_remaing.append(i)
 ```
+# Conclussion
+- After `ANOVA` we can get only 38 columns.
+
+# Chie-Square
+- These test are generally perform on categorical column.
+- Note that target column category should be `>=3`.
+- Now using `chie-square` test we can check the relationship b/w target col.
+```python
+drop_col=[]
+for i in cat_col[:-1]:
+    # Perform chie-square
+    chie,p_value,_,_=chi2_contingency(pd.crosstab(final_df[i],final_df[cat_col[-1]]))
+    
+    print(i,"----->",p_value)
+    if(p_value>0.05):
+        drop_col.append(i)
+```
+# Conclussion
+- See that all the columns `p_value` is less the `0.05` so we can accept all the columns.
