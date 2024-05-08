@@ -71,3 +71,18 @@ final_df.dtypes
 # Conclusion (Handling -99999 Values)
 - After removing rows containing `-99999` values, we can retain `80%` of the data.
 - We have decided to remove the missing values.
+
+# Duplicates
+```python
+final_df.duplicated().sum()
+```
+
+# Unique Values
+- There are `2` unique values in  `MARITALSTATUS` i-e  `['Married' 'Single']`
+- There are `7` unique values in  `EDUCATION` i-e `['12TH' 'GRADUATE' 'SSC' 'POST-GRADUATE' 'UNDER GRADUATE' 'OTHERS'
+ 'PROFESSIONAL']`
+- There are `2` unique values in  `GENDER` i-e `['M' 'F']`
+- There are `6` unique values in  `last_prod_enq2` i-e `['PL' 'ConsumerLoan' 'AL' 'CC' 'others' 'HL']`
+- There are `6` unique values in  `first_prod_enq2` i-e `['PL' 'ConsumerLoan' 'others' 'AL' 'HL' 'CC']`
+- There are `4` unique values in  `Approved_Flag` i-e `['P2' 'P1' 'P3' 'P4']`
+
