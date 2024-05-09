@@ -161,3 +161,77 @@ for i in cat_col[:-1]:
 ```
 # Conclussion
 - See that all the columns `p_value` is less the `0.05` so we can accept all the columns.
+
+# Model Building
+- First we can saperate the input and output columns.
+- Second we can saperate numerical and categorical columns.
+- Third we can build a pipeline for some transformation.
+
+# Saperate Input and output col
+```python
+feature=final_df.drop(columns=['Approved_Flag'])
+label=final_df['Approved_Flag']
+```
+
+# Encode target Colummn
+```python
+from sklearn.preprocessing import LabelEncoder,OneHotEncoder,StandardScaler
+lb=LabelEncoder()
+label=lb.fit_transform(label)
+```
+# Saperate `Numerical` and `Categorical` column
+```python 
+num_col=feature.select_dtypes('number').columns
+cat_col=feature.select_dtypes('object').columns
+```
+# Train Test Split
+```python
+from sklearn.model_selection import train_test_split
+x_train,x_test,y_train,y_test=train_test_split(feature,label,test_size=0.2,random_state=43)
+```
+
+# Building Pipeline
+- we can build a pipeline for numercial column.
+    - In numerical pipeline we can scale the feature.
+- we can build a pipeline for categorical column.
+    - In categorical pipeline we can encode the categorical column.
+
+# Numerical Pipeline
+```python
+num_pipe=Pipeline(steps=[
+    ("impute",SimpleImputer(strategy='median')),
+    ('scale',StandardScaler())
+])
+num_pipe
+```
+
+# Categorical Pipeline
+```python
+cat_pipe=Pipeline(steps=[
+    ("impute",SimpleImputer(strategy='most_frequent')),
+    ('Encode',OneHotEncoder(drop='first',sparse=False,handle_unknown='ignore'))
+])
+cat_pipe
+```
+
+# Colum Transformer
+- In column transformer we can combine al the steps.
+
+```python
+transformer=ColumnTransformer(transformers=[
+    ('num_transformer',num_pipe,num_col),
+    ("Encode",cat_pipe,cat_col)
+],remainder='passthrough')
+transformer
+```
+# Build Final Pipeline for model
+```python
+final=Pipeline(steps=[
+    ("process",transformer),
+    ("model",LogisticRegression())
+])
+```
+# Fit the model
+```python
+final.fit(x_train,y_train)
+```
