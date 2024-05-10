@@ -225,13 +225,58 @@ transformer=ColumnTransformer(transformers=[
 transformer
 ```
 # Build Final Pipeline for model
-```python
-final=Pipeline(steps=[
-    ("process",transformer),
-    ("model",LogisticRegression())
-])
-```
+
 # Fit the model
+- In this we can train different models.
+- Those model will give better result we can tune them.
+
+# Make the models dict
 ```python
-final.fit(x_train,y_train)
+model_dic={
+    "LogisticRegression":LogisticRegression(),
+    "RandomForest":RandomForestClassifier(),
+    "DecessionTree":DecisionTreeClassifier(),
+    "xgboost":XGBClassifier()
+}
 ```
+# Fit models
+- Fit models and also calculate the score
+
+```python
+results={
+    "model_name":[],
+    "score":[],
+    'train score':[],
+    "test score":[],
+    'matrix':[]
+}
+for model_name,model in model_dic.items():
+    final=Pipeline(steps=[
+    ("process",transformer),
+    ("model",model)
+    ])
+    
+    # Fit the model pipe
+    final.fit(x_train,y_train)
+    
+    # Prediction
+    pre=final.predict(x_test)
+    
+    # Calculate score
+    score=accuracy_score(y_test,pre)
+    matrix=confusion_matrix(y_test,pre)
+    
+    #Cross val score
+    train_score=cross_val_score(final,x_train,y_train,cv=5,scoring='accuracy')
+    test_score=cross_val_score(final,x_test,y_test,cv=5,scoring='accuracy')
+    
+    
+    results['model_name'].append(model_name)
+    results['score'].append(score)
+    results['train score'].append(train_score)
+    results['test score'].append(test_score)
+    
+    results['matrix'].append(matrix)
+```
+# Conclussion
+- We see that `Xgboost` give better result with `accuracy score` of `78` now we can fine tune them
