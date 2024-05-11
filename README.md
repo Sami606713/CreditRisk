@@ -280,3 +280,41 @@ for model_name,model in model_dic.items():
 ```
 # Conclussion
 - We see that `Xgboost` give better result with `accuracy score` of `78` now we can fine tune them
+
+# Hyperparaneter Tunning
+```python
+param_grid = {
+    'model__model__colsample_bytree': [0.1, 0.3, 0.5, 0.7, 0.9],
+    'model__model__learning_rate': [0.001, 0.01, 0.1, 1],
+    'model__model__max_depth': [3, 5, 8, 10],
+    'model__model__n_estimators': [10, 50, 100]
+}
+xgb_boost=XGBClassifier()
+pipeline=Pipeline(steps=[
+    ("process",transformer),
+    ('model',xgb_boost)
+])
+grid_search=GridSearchCV(pipeline,param_grid=param_grid,scoring='accuracy',n_jobs=-1,cv=5)
+grid_search.fit(x_train,y_train)
+```
+# See best parameter
+```python
+grid_search.best_params_
+pre=grid_search.predict(x_test)
+pre
+```
+
+# Accuracy
+```python
+accuracy_score(y_test,pre)
+```
+# Cofussion Matrix
+```python
+confusion_matrix(y_test,pre)
+```
+# Conclussion
+- After Hyperparameter Tunning we can get `78%` accuracy
+
+# Cross Validation
+- Train score is:  0.7754301083695385
+- Test Score is:  0.7669086472192019
